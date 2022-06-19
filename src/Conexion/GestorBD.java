@@ -26,7 +26,16 @@ public class GestorBD {
     }
 
     public Connection getConexion() {
-        return conexion;
+         try {
+            Class.forName(DRIVER);
+            conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
+            System.err.println("ERROR SQLException:  " + e);
+
+        } catch (ClassNotFoundException e) {
+            System.err.println("ERROR ClassNotFoundException:  " + e);
+        }
+         return conexion;
     }
 
     public void setConexion(Connection conexion) {
