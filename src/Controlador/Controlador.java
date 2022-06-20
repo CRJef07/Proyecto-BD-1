@@ -137,12 +137,6 @@ public class Controlador {
     }
     public void cargarFilial( int idFilial, JTextField cantApartamentos, JTextField cantonFilial, JTextField cedJuridica, JTextField distritoFilial, JTextField nombreFilial, JTextField provinciaFilial) {
         this.apartamentos.cargarFilial(idFilial,cantApartamentos, cantonFilial, cedJuridica, distritoFilial, nombreFilial, provinciaFilial);
-    }
-
-   
-    public void cargarFiliales(JTable tabla){
-        this.filiales.cargarFiliales(tabla);
-    }
-   
+    }   
 
 }
