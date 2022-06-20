@@ -45,7 +45,7 @@ public class Apartamentos extends Observable {
 
     public void cargarFilial(int idFilial, JTextField cantApartamentos, JTextField cantonFilial, JTextField cedJuridica, JTextField distritoFilial, JTextField nombreFilial, JTextField provinciaFilial) {
         try {
-            String cadena = "SELECT * FROM FILIALES WHERE ID_FILIAL= " + idFilial;
+            String cadena = "SELECT FIL.ID_FILIAL, FIL.NOMBRE, FIL.CANT_APART, PROV.DESCRIPCION, CAN.DESCRIPCION, DIS.DESCRIPCION, FIL.HABILITADO FROM FILIALES FIL JOIN PROVINCIAS PROV ON (FIL.ID_PROVINCIA = PROV.ID_PROVINCIA) JOIN CANTONES CAN ON (FIL.ID_CANTON = CAN.ID_CANTON) JOIN DISTRITOS DIS ON (FIL.ID_DISTRITO = DIS.ID_DISTRITO) WHERE ID_FILIAL= " + idFilial;
             Statement st = gestor.getConexion().createStatement();
             ResultSet rs = st.executeQuery(cadena);
             while (rs.next()) {
@@ -68,12 +68,14 @@ public class Apartamentos extends Observable {
 
     public void cargarApartamentos(int idFilial, JTable tabla) {
         try {
-            String cadena = "SELECT * FROM APARTAMENTOS WHERE ID_FILIAL= " + idFilial;
+            String cadena = "SELECT APAR.ID_CASA, APAR.ID_DUEÑO, DUE.NOMBRE, DUE.APE1, DUE.APE2 FROM APARTAMENTOS APAR JOIN DUEÑOS DUE ON (APAR.ID_DUEÑO = DUE.ID_DUEÑO) WHERE ID_FILIAL= " + idFilial;
             Statement st = gestor.getConexion().createStatement();
             ResultSet rs = st.executeQuery(cadena);
+            String nombreCompleto= "";
             while (rs.next()) {
+                nombreCompleto= rs.getString(3)+" "+ rs.getString(4)+" "+ rs.getString(5);
                 DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                modelo.addRow(new Object[]{rs.getString("ID_CASA"), rs.getString("ID_DUEÑO")});
+                modelo.addRow(new Object[]{rs.getString(1), rs.getString(2), nombreCompleto});
 
             }
             setChanged();
@@ -88,7 +90,7 @@ public class Apartamentos extends Observable {
     public void agregarAparta(JTable tabla, int idFilial) {
         String id = JOptionPane.showInputDialog(null, "Digite el id del apartamento");
         if (id != null && !id.isBlank() && !id.isEmpty()) {
-                String dueno = JOptionPane.showInputDialog(null, "Digite el dueño del apartamento");
+                String dueno = JOptionPane.showInputDialog(null, "Digite la cedula del apartamento");
                 if (dueno != null && !dueno.isBlank() && !dueno.isEmpty()) {
                     try {
                         CallableStatement pst = gestor.getConexion().prepareCall("{CALL SP_INS_APAR(?, ?, ?, ?)}");
@@ -98,8 +100,8 @@ public class Apartamentos extends Observable {
                         pst.setString(4, "S");
                         pst.execute();
                         
-                        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                        modelo.addRow(new Object[]{id, idFilial, dueno});
+                        //DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                       // modelo.addRow(new Object[]{id, dueno, idFilial});
 
                         setChanged();
                         notifyObservers("CARGANDO TABLA APARTAMENTOS");
