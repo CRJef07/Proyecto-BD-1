@@ -4,7 +4,10 @@ import Conexion.GestorBD;
 import Modelos.Apartamentos;
 import Modelos.Dueno;
 import Modelos.Filiales;
+import java.sql.SQLException;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -93,7 +96,11 @@ public class Controlador {
     }
 
     public void agregarFilial() {
-        this.filiales.agregarFilial();
+        try {
+            this.filiales.agregarFilial();
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void eliminarFilial() {
@@ -103,6 +110,7 @@ public class Controlador {
     public void modificarFilial() {
         this.filiales.modificarFilial();
     }
+
 
     public void cargarFiliales(JTable tabla) {
         this.filiales.cargarFiliales(tabla);
@@ -130,4 +138,11 @@ public class Controlador {
     public void cargarFilial( int idFilial, JTextField cantApartamentos, JTextField cantonFilial, JTextField cedJuridica, JTextField distritoFilial, JTextField nombreFilial, JTextField provinciaFilial) {
         this.apartamentos.cargarFilial(idFilial,cantApartamentos, cantonFilial, cedJuridica, distritoFilial, nombreFilial, provinciaFilial);
     }
+
+   
+    public void cargarFiliales(JTable tabla){
+        this.filiales.cargarFiliales(tabla);
+    }
+   
+
 }
