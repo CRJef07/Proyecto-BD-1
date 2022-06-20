@@ -1,6 +1,7 @@
 package Modelos;
 
 import Conexion.GestorBD;
+import Vistas.condominios;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JTable;
@@ -8,6 +9,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class Filiales extends Observable {
@@ -113,10 +115,6 @@ public class Filiales extends Observable {
 
     }
 
-    public void verFilial() {
-
-    }
-
     public void cargarFiliales(JTable tabla) {
         try {
             String cadena = "SELECT * FROM FILIALES";
@@ -131,8 +129,10 @@ public class Filiales extends Observable {
         } catch (SQLException e) {
             System.err.println("Error:" + e);
         } finally {
-           gestor.cerrar();
+            gestor.cerrar();
         }
     }
+
+
 
 }

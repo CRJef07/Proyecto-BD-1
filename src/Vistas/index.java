@@ -18,6 +18,7 @@ public class index extends javax.swing.JFrame implements Observer {
     public void iniciar(){
         this.controlador.agregarObservador(this);
         this.controlador.cargarFiliales(tbFiliales);
+        
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -125,7 +126,17 @@ public class index extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_btnEliminarFilialActionPerformed
 
     private void EntrarFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EntrarFilialActionPerformed
-        // TODO add your handling code here:
+        int fila = tbFiliales.getSelectedRow();
+        if(fila!= -1){
+           int idFilial= (int) tbFiliales.getValueAt(fila, 0);
+           try {
+            controlador.verFilial(idFilial); 
+            //*setVisible(false);
+        } catch (Exception e) {  
+            System.err.println("Error en ver Filiales: "+ e);
+        }         
+        }
+           
     }//GEN-LAST:event_EntrarFilialActionPerformed
 
     /**
