@@ -111,11 +111,8 @@ public class index extends javax.swing.JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarFilialActionPerformed
-       
-        String NombreF;
-        String direccion;
-        NombreF=JOptionPane.showInputDialog("Ingrese el nombre del filial");
-        direccion=JOptionPane.showInputDialog("Ingrese el direccion del filial");
+       this.controlador.agregarFilial();
+        
         //si no esta en blanco -si no está repetido -falta los datos nuevos de la tabla
        
     }//GEN-LAST:event_btnAgregarFilialActionPerformed
