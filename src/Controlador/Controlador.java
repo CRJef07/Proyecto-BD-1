@@ -2,7 +2,10 @@ package Controlador;
 
 import Conexion.GestorBD;
 import Modelos.Filiales;
+import java.sql.SQLException;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTable;
 
 public class Controlador {
@@ -86,7 +89,11 @@ public class Controlador {
     }
 
     public void agregarFilial() {
-        this.filiales.agregarFilial();
+        try {
+            this.filiales.agregarFilial();
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void eliminarFilial() {
@@ -97,10 +104,9 @@ public class Controlador {
         this.filiales.modificarFilial();
     }
 
-    public void verFilial() {
-        this.filiales.verFilial();
-    }
+   
     public void cargarFiliales(JTable tabla){
         this.filiales.cargarFiliales(tabla);
     }
+   
 }
