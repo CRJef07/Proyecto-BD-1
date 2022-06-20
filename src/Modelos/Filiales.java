@@ -1,12 +1,21 @@
 package Modelos;
 
 import Conexion.GestorBD;
+import Vistas.condominios;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JTable;
+
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JTextField;
+
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+
 import javax.swing.table.DefaultTableModel;
 
 public class Filiales extends Observable {
@@ -156,6 +165,8 @@ public class Filiales extends Observable {
     public void modificarFilial() {
 
     }
+
+
 
     public ArrayList<String> obtenerProvincias() {
 
@@ -328,6 +339,7 @@ public class Filiales extends Observable {
         return id;
     }
     
+
     public void cargarFiliales(JTable tabla) {
         try {
             String cadena = "SELECT FIL.ID_FILIAL, FIL.NOMBRE, FIL.CANT_APART, PROV.DESCRIPCION,"
@@ -348,5 +360,7 @@ public class Filiales extends Observable {
             gestor.cerrar();
         }
     }
+
+
 
 }
