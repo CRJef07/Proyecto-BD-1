@@ -95,16 +95,16 @@ public class Controlador {
         this.filiales.agregarObservador(observador);
     }
 
-    public void agregarFilial() {
+    public void agregarFilial(JTable tbFiliales) {
         try {
-            this.filiales.agregarFilial();
+            this.filiales.agregarFilial(tbFiliales);
         } catch (SQLException ex) {
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void eliminarFilial() {
-        this.filiales.eliminarFilial();
+    public void eliminarFilial(int idFilial,JTable tbFiliales) {
+        this.filiales.eliminarFilial(idFilial,tbFiliales);
     }
 
     public void modificarFilial() {

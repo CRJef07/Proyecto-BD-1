@@ -7,7 +7,7 @@ public class CondominiosVAC {
     public static void main(String[] args) {
 
        index vista=new index();
-      vista.iniciar();
+       vista.iniciar();
 
     }
 
