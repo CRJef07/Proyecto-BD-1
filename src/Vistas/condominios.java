@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Vistas;
 
 import Controlador.Controlador;
@@ -14,25 +10,22 @@ import java.util.Observer;
  * @author hilla
  */
 public class condominios extends javax.swing.JFrame implements Observer {
-
+    
     private Controlador controlador;
-    private int idFilial=0;
-    /**
-     * Creates new form condominios
-     */
+    private int idFilial = 0;
+    
     public condominios() {
         super("Ver Filial");
         this.controlador = new Controlador();
         initComponents();
-
+        
     }
-
+    
     public void iniciar(int idFilial) {
-        this.idFilial=idFilial;
+        this.idFilial = idFilial;
         this.controlador.agregarObservador(this);
         this.controlador.cargarFilial(this.idFilial, cantApartamentos, cantonFilial, cedJuridica, distritoFilial, nombreFilial, provinciaFilial);
         this.controlador.cargarApartamentos(this.idFilial, tabla);
-       //* this.controlador.cargarDueno(tabla);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -178,19 +171,16 @@ public class condominios extends javax.swing.JFrame implements Observer {
         volver.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         volver.setForeground(new java.awt.Color(51, 51, 51));
         volver.setText("Volver");
+        volver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addComponent(editarDueno)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(agregarApartamento)
-                .addGap(104, 104, 104)
-                .addComponent(verCuotas)
-                .addGap(56, 56, 56))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -204,6 +194,14 @@ public class condominios extends javax.swing.JFrame implements Observer {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(volver)
                 .addGap(348, 348, 348))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(editarDueno)
+                .addGap(86, 86, 86)
+                .addComponent(agregarApartamento)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(verCuotas)
+                .addGap(58, 58, 58))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,15 +209,15 @@ public class condominios extends javax.swing.JFrame implements Observer {
                 .addGap(26, 26, 26)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editarDueno)
                     .addComponent(agregarApartamento)
-                    .addComponent(verCuotas)
-                    .addComponent(editarDueno))
-                .addGap(26, 26, 26)
+                    .addComponent(verCuotas))
+                .addGap(18, 18, 18)
                 .addComponent(volver)
-                .addGap(14, 14, 14))
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -298,9 +296,7 @@ public class condominios extends javax.swing.JFrame implements Observer {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -316,8 +312,8 @@ public class condominios extends javax.swing.JFrame implements Observer {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         pack();
@@ -327,29 +323,34 @@ public class condominios extends javax.swing.JFrame implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_cedJuridicaActionPerformed
 
-    private void agregarApartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarApartamentoActionPerformed
-
-        controlador.agregarAparta(tabla, idFilial);
-       
-    }//GEN-LAST:event_agregarApartamentoActionPerformed
-
-    private void editarDuenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarDuenoActionPerformed
-       int fila = tabla.getSelectedRow();
-        if(fila!= -1){
-           int idDueno= (int) tabla.getValueAt(fila, 0);
-           try {
-           controlador.verDueno(idDueno);
-            //*setVisible(false);
-        } catch (Exception e) {  
-            System.err.println("Error en ver Duenos: "+ e);
-        }         
-        }
-        
-    }//GEN-LAST:event_editarDuenoActionPerformed
+    private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
+        index vista = new index();
+        vista.iniciar();
+        setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_volverActionPerformed
 
     private void verCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verCuotasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_verCuotasActionPerformed
+
+    private void editarDuenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarDuenoActionPerformed
+        int fila = tabla.getSelectedRow();
+        if (fila != -1) {
+            int idDueno = (int) tabla.getValueAt(fila, 0);
+            try {
+                controlador.verDueno(idDueno);
+                //*setVisible(false);
+            } catch (Exception e) {
+                System.err.println("Error en ver Duenos: " + e);
+            }
+        }
+    }//GEN-LAST:event_editarDuenoActionPerformed
+
+    private void agregarApartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarApartamentoActionPerformed
+
+        controlador.agregarAparta(tabla, idFilial);
+    }//GEN-LAST:event_agregarApartamentoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -414,6 +415,6 @@ public class condominios extends javax.swing.JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-
+        
     }
 }
