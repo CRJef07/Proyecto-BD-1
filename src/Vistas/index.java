@@ -79,7 +79,7 @@ public class index extends javax.swing.JFrame implements Observer {
 
             },
             new String [] {
-                "Id ", "nombre", "Cantidad Apartamentos", "Provincia", "Canton", "Distrito", "Habilitado"
+                "Id ", "nombre", "Apartamentos", "Provincia", "Canton", "Distrito", "Activo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -91,6 +91,17 @@ public class index extends javax.swing.JFrame implements Observer {
             }
         });
         scroll.setViewportView(tbFiliales);
+        if (tbFiliales.getColumnModel().getColumnCount() > 0) {
+            tbFiliales.getColumnModel().getColumn(0).setMaxWidth(50);
+            tbFiliales.getColumnModel().getColumn(1).setMinWidth(150);
+            tbFiliales.getColumnModel().getColumn(2).setMinWidth(100);
+            tbFiliales.getColumnModel().getColumn(2).setMaxWidth(100);
+            tbFiliales.getColumnModel().getColumn(3).setMinWidth(100);
+            tbFiliales.getColumnModel().getColumn(4).setMinWidth(100);
+            tbFiliales.getColumnModel().getColumn(5).setMinWidth(100);
+            tbFiliales.getColumnModel().getColumn(6).setMinWidth(50);
+            tbFiliales.getColumnModel().getColumn(6).setMaxWidth(50);
+        }
 
         jPanel1.add(scroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 740, 370));
 
@@ -112,14 +123,24 @@ public class index extends javax.swing.JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarFilialActionPerformed
-       this.controlador.agregarFilial();
+        this.controlador.agregarFilial(tbFiliales);
         
         //si no esta en blanco -si no está repetido -falta los datos nuevos de la tabla
        
     }//GEN-LAST:event_btnAgregarFilialActionPerformed
 
     private void btnEliminarFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarFilialActionPerformed
-        // TODO add your handling code here:
+
+        int fila = tbFiliales.getSelectedRow();
+        if(fila!= -1){
+           int idFilial= (int) tbFiliales.getValueAt(fila, 0);
+           try {
+            controlador.eliminarFilial(idFilial,tbFiliales); 
+            //*setVisible(false);
+        } catch (Exception e) {  
+            System.err.println("Error en ver Filiales: "+ e);
+        }         
+        }
     }//GEN-LAST:event_btnEliminarFilialActionPerformed
 
     private void EntrarFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EntrarFilialActionPerformed

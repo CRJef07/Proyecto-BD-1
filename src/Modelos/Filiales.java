@@ -5,7 +5,7 @@ import Vistas.condominios;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JTable;
-
+import Vistas.index;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -109,7 +109,7 @@ public class Filiales extends Observable {
         notifyObservers("Observador");
     }
 
-    public void agregarFilial() throws SQLException {
+    public void agregarFilial(JTable tbFiliales) throws SQLException {
         String nombre = (String) JOptionPane.showInputDialog(null, "Ingrese el nombre del filial");
         if (nombre != null && !nombre.equals("")) {
             ArrayList<String> provincias = obtenerProvincias();
@@ -123,30 +123,32 @@ public class Filiales extends Observable {
                             ArrayList<String> distritos = obtenerDistritos(canton);
                             if (distritos != null) {
                                 String distrito = (String) JOptionPane.showInputDialog(null, "Seleccione el distrito", "Distritos", JOptionPane.QUESTION_MESSAGE, null, distritos.toArray(), distritos.get(0));
-                                
+
                                 if (distrito != null) {
-                                  int idProvincia = obtenerIDProv(provincia);
-                                  int idCanton = obtenerIDCan(canton);
-                                  int idDistrito = obtenerIDDis(distrito);
-                                  
+                                    int idProvincia = obtenerIDProv(provincia);
+                                    int idCanton = obtenerIDCan(canton);
+                                    int idDistrito = obtenerIDDis(distrito);
+
                                     Statement st = null;
                                     ResultSet rs = null;
-                                    
+
                                     try {
                                         CallableStatement cs = gestor.getConexion().prepareCall("{CALL SP_INS_FIL(?,?,?,?,?,?)}");
                                         cs.setString(1, nombre);
                                         cs.setInt(2, 0);
-                                        cs.setInt(3,idProvincia);
+                                        cs.setInt(3, idProvincia);
                                         cs.setInt(4, idCanton);
-                                        cs.setInt(5,idDistrito);
+                                        cs.setInt(5, idDistrito);
                                         cs.setString(6, "S");
                                         cs.execute();
 
+                                        DefaultTableModel modelo = (DefaultTableModel) tbFiliales.getModel();
+                                        modelo.addRow(new Object[]{idFilial, nombre, 0, provincia, canton, distrito, "S"});
                                     } catch (SQLException e) {
                                         System.err.println("Error:" + e);
-                                    
+
                                     } finally {
-                                     gestor.cerrar();
+                                        gestor.cerrar();
                                     }
                                 }
                             }
@@ -157,16 +159,33 @@ public class Filiales extends Observable {
         }
     }
 
-    
-    public void eliminarFilial() {
+    public void eliminarFilial(int idFilial, JTable tbFiliales) {
+        String[] respuesta = {"Si", "No"};
+        int res = JOptionPane.showOptionDialog(null, "¿Está seguro que desea eliminar el filial?", "Eliminar", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, respuesta, respuesta[0]);
+
+        if (res == 0) {
+            try {
+                CallableStatement cs = gestor.getConexion().prepareCall("{CALL SP_DEL_FIL(?)}");
+                cs.setInt(1, idFilial);
+                cs.execute();
+                DefaultTableModel modelo = (DefaultTableModel) tbFiliales.getModel();
+                for (int i = modelo.getRowCount() - 1; i >= 0; i--) {
+                    modelo.removeRow(i);
+                }
+                cargarFiliales(tbFiliales);
+
+            } catch (Exception e) {
+                System.err.println("Error:" + e);
+            } finally {
+                gestor = null;
+            }
+        }
 
     }
 
     public void modificarFilial() {
 
     }
-
-
 
     public ArrayList<String> obtenerProvincias() {
 
@@ -287,7 +306,7 @@ public class Filiales extends Observable {
 
         try {
             st = gestor.getConexion().createStatement();
-            rs = st.executeQuery("SELECT ID_PROVINCIA FROM PROVINCIAS WHERE DESCRIPCION ='" + provincia+"'");
+            rs = st.executeQuery("SELECT ID_PROVINCIA FROM PROVINCIAS WHERE DESCRIPCION ='" + provincia + "'");
             if (rs.next()) {
                 id = rs.getInt(1);
             }
@@ -300,14 +319,14 @@ public class Filiales extends Observable {
         return id;
     }
 
-     public int obtenerIDCan(String canton) {
+    public int obtenerIDCan(String canton) {
         int id = 0;
         Statement st = null;
         ResultSet rs = null;
 
         try {
             st = gestor.getConexion().createStatement();
-            rs = st.executeQuery("SELECT ID_CANTON FROM CANTONES WHERE DESCRIPCION ='" + canton+"'");
+            rs = st.executeQuery("SELECT ID_CANTON FROM CANTONES WHERE DESCRIPCION ='" + canton + "'");
             if (rs.next()) {
                 id = rs.getInt(1);
             }
@@ -319,14 +338,15 @@ public class Filiales extends Observable {
 
         return id;
     }
-     public int obtenerIDDis(String distrito) {
+
+    public int obtenerIDDis(String distrito) {
         int id = 0;
         Statement st = null;
         ResultSet rs = null;
 
         try {
             st = gestor.getConexion().createStatement();
-            rs = st.executeQuery("SELECT ID_DISTRITO FROM DISTRITOS WHERE DESCRIPCION ='" + distrito+"'");
+            rs = st.executeQuery("SELECT ID_DISTRITO FROM DISTRITOS WHERE DESCRIPCION ='" + distrito + "'");
             if (rs.next()) {
                 id = rs.getInt(1);
             }
@@ -338,7 +358,6 @@ public class Filiales extends Observable {
 
         return id;
     }
-    
 
     public void cargarFiliales(JTable tabla) {
         try {
@@ -360,7 +379,5 @@ public class Filiales extends Observable {
             gestor.cerrar();
         }
     }
-
-
 
 }
