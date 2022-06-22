@@ -32,7 +32,7 @@ public class condominios extends javax.swing.JFrame implements Observer {
         this.controlador.agregarObservador(this);
         this.controlador.cargarFilial(this.idFilial, cantApartamentos, cantonFilial, cedJuridica, distritoFilial, nombreFilial, provinciaFilial);
         this.controlador.cargarApartamentos(this.idFilial, tabla);
-        this.controlador.cargarDueno(tabla);
+       //* this.controlador.cargarDueno(tabla);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
