@@ -32,7 +32,6 @@ public class Apartamentos extends Observable {
     public void verFilial(int idFilial) {
         condominios VistaCondominio = new condominios();
         VistaCondominio.iniciar(idFilial);
-
     }
 
     public void verAgregarAparta() {

@@ -149,7 +149,8 @@ public class index extends javax.swing.JFrame implements Observer {
            int idFilial= (int) tbFiliales.getValueAt(fila, 0);
            try {
             controlador.verFilial(idFilial); 
-            //*setVisible(false);
+            setVisible(false);
+            this.dispose();
         } catch (Exception e) {  
             System.err.println("Error en ver Filiales: "+ e);
         }         
