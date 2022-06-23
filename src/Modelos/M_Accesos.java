@@ -13,8 +13,12 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -111,44 +115,30 @@ public class M_Accesos extends Observable {
         access.iniciar(idApartamento);
     }
 
-    public void agregarAcceso(JTable tbAccesos,String idApartamento) throws SQLException {
-        String ced = JOptionPane.showInputDialog(null, "Ingrese la cedula del visitante");
+    public void agregarAcceso(JTable tbAccesos, String idApartamento) throws SQLException {
+        String ced = JOptionPane.showInputDialog(null, "Ingrese la cedula del visitante \n DEBE SER MAYOR A 8 Y MENOR A 16 DÍGITOS");
+
         if (ced != null && ced.length() <= 15 && ced.length() >= 9 && !ced.equals("")) {
-            int dia = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el dia de entrada"));
-            if (dia <= 31 && dia >= 1) {
-                int mes = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el mes de entrada"));
-                if (mes <= 12 && mes >= 1) {
-                    int anno = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el año de entrada"));
-                    if (anno <= 2999 && anno >= 2022) {
-                        int hora = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la hora de entrada"));
-                        if (hora <= 24 && hora >= 0) {
-                            int min = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el minuto de entrada"));
-                            if (hora <= 60 && hora >= 0) {
-                                String fecha = "TO_DATE('" + anno + "'/'" + mes + "'/'" + dia + "' '" + hora + "':'" + min + "':00', 'yyyy/mm/dd hh24:mi:ss')";
-                                Statement st = null;
-                                ResultSet rs = null;
-                                try {
-                                    CallableStatement cs = gestor.getConexion().prepareCall("{CALL SP_INS_ACC(?,?,?,?)}");
-                                    cs.setString(1, idApartamento);
-                                    cs.setString(2, fecha);
-                                    cs.setString(3, "No registrado");
-                                    cs.setString(4, ced);
-                                    cs.execute();
 
-                                    DefaultTableModel modelo = (DefaultTableModel) tbAccesos.getModel();
-                                    fecha = "'" + anno + "'/'" + mes + "'/'" + dia + "' '" + hora + "':'" + min + "':00', 'yyyy/mm/dd hh24:mi:ss'";
-                                    modelo.addRow(new Object[]{idAcceso, idApartamento, fecha, "No registrado", ced});
-                                } catch (SQLException e) {
-                                    System.err.println("Error:" + e);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+            String fecha = dtf.format(LocalDateTime.now());
 
-                                } finally {
-                                    gestor.cerrar();
-                                }
-                            }
-                        }
-                    }
-                }
+            try {
+                CallableStatement cs = gestor.getConexion().prepareCall("{CALL SP_INS_ACC(?,?,?,?)}");
+                cs.setString(1, idApartamento);
+                cs.setString(2, fecha);
+                cs.setString(3, fecha);
+                cs.setString(4, ced);
+                cs.execute();
+
+                DefaultTableModel modelo = (DefaultTableModel) tbAccesos.getModel();
+                modelo.addRow(new Object[]{idAcceso, idApartamento, fecha, "No registrado", ced});
+            } catch (SQLException e) {
+                System.err.println("Error:" + e);
+            } finally {
+                gestor.cerrar();
             }
+
         }
     }
 }

@@ -73,6 +73,11 @@ public class Accesos extends javax.swing.JFrame implements Observer {
         });
 
         btnSalida.setText("Registrar Salida");
+        btnSalida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalidaActionPerformed(evt);
+            }
+        });
 
         btnVolver.setText("Volver");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
@@ -132,6 +137,10 @@ public class Accesos extends javax.swing.JFrame implements Observer {
 
         this.controlador.agregarAcceso(tbAccesos, idApartamento);
     }//GEN-LAST:event_btnRegistAccesoActionPerformed
+
+    private void btnSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalidaActionPerformed
 
     public static void main(String args[]) {
         try {
