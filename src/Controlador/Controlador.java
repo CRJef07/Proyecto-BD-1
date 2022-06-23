@@ -127,6 +127,10 @@ public class Controlador {
         this.filiales.eliminarFilial(idFilial, tbFiliales);
 
     }
+    public void eliminarAparta(String idAparta,int fila, JTable tabla) {
+        this.apartamentos.eliminarAparta(idAparta,fila, tabla);
+
+    }
 
     public void eliminarCuota(int idFilial, int fila, JTable tabla) {
         this.cuotas.eliminarCuota(idFilial, fila, tabla);

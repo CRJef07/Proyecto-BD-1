@@ -123,6 +123,26 @@ public class Apartamentos extends Observable {
             //String dueno = JOptionPane.showInputDialog(null, "Digite la cedula del dueño");
         }
     }
+    public void eliminarAparta(String apar, int fila, JTable tabla) {
+        String[] respuesta = {"Si", "No"};
+        int res = JOptionPane.showOptionDialog(null, "¿Está seguro que desea eliminar el apartamento?", "Eliminar", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, respuesta, respuesta[0]);
+
+        if (res == 0) {
+
+            try {
+                CallableStatement cs = gestor.getConexion().prepareCall("{CALL SP_DEL_APAR(?)}");
+                cs.setString(1, apar);
+                cs.execute();
+                ((DefaultTableModel) tabla.getModel()).removeRow(fila);
+
+            } catch (Exception e) {
+                System.err.println("Error:" + e);
+            } finally {
+                gestor = null;
+            }
+        }
+
+    }
 
     public ArrayList<String> obtenerDueños() {
 
