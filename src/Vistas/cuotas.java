@@ -186,6 +186,7 @@ private int idFilial;
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
          condominios vista = new condominios();
         vista.iniciar(idCuotas,idFilial);
+        //vista.iniciar(idFilial);
         setVisible(false);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed

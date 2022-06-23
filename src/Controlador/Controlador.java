@@ -27,7 +27,7 @@ public class Controlador {
 
     public Controlador() {
         this.filiales = new Filiales();
-        this.cuotas= new Cuotas();
+        this.cuotas = new Cuotas();
         this.apartamentos = new Apartamentos();
         this.dueno = new Dueno();
         this.dueños = new Dueños();
@@ -127,7 +127,8 @@ public class Controlador {
         this.filiales.eliminarFilial(idFilial, tbFiliales);
 
     }
-    public void eliminarCuota(int idFilial,int fila, JTable tabla) {
+
+    public void eliminarCuota(int idFilial, int fila, JTable tabla) {
         this.cuotas.eliminarCuota(idFilial, fila, tabla);
 
     }
@@ -145,7 +146,7 @@ public class Controlador {
     }
 
     public void verFilial(String idAparta, int idFilial) {
-        this.apartamentos.verFilial(idAparta,idFilial);
+        this.apartamentos.verFilial(idAparta, idFilial);
     }
 
     public void verAgregarAparta() {
@@ -156,28 +157,25 @@ public class Controlador {
         this.dueno.verDueno(idDueno);
     }
 
-
     public void verCuotas(String idCuotas, int idF) {
         this.cuotas.verCuotas(idCuotas, idF);
     }
 
-
     public void agregarAparta(JTable tabla, int idFilial) {
         this.apartamentos.agregarAparta(tabla, idFilial);
     }
-     public void agregarCuota(String idCasa,JTable tabla) {
-        this.cuotas.agregarCuota( idCasa, tabla);
+
+    public void agregarCuota(String idCasa, JTable tabla) {
+        this.cuotas.agregarCuota(idCasa, tabla);
     }
 
     public void cargarApartamentos(int idFilial, JTable tabla) {
         this.apartamentos.cargarApartamentos(idFilial, tabla);
     }
 
-
     public void cargarCuotas(String idCuotas, JTable tabla) {
         this.cuotas.cargarCuotas(idCuotas, tabla);
     }
-
 
     public void cargarFilial(int idFilial, JTextField cantApartamentos, JTextField cantonFilial,
             JTextField cedJuridica, JTextField distritoFilial, JTextField nombreFilial, JTextField provinciaFilial) {

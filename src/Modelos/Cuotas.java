@@ -59,7 +59,7 @@ public class Cuotas extends Observable {
             while (rs.next()) {
 
                 DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                modelo.addRow(new Object[]{rs.getInt(1), rs.getInt(2), rs.getString(3),rs.getString(4), rs.getString(5), rs.getFloat(6)});
+                modelo.addRow(new Object[]{rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getFloat(6)});
 
             }
             setChanged();
@@ -73,48 +73,50 @@ public class Cuotas extends Observable {
 
     public void agregarCuota(String idCasa, JTable tabla) {
         ArrayList<String> cuot = obtenerCuotas();
-        String cu = (String) JOptionPane.showInputDialog(null, "Seleccione el tipo de cuota", "Cuotas", JOptionPane.QUESTION_MESSAGE, null, cuot.toArray(), cuot.get(0));
-        if (cu != null && !cu.isBlank() && !cu.isEmpty()) {
-            String des = JOptionPane.showInputDialog(null, "Digite la descripcion");
-            if (des != null && !des.isBlank() && !des.isEmpty()) {
-                int mon = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite el monto de la cuota"));
+        if (cuot != null && cuot.size() > 0) {
+            String cu = (String) JOptionPane.showInputDialog(null, "Seleccione el tipo de cuota", "Cuotas", JOptionPane.QUESTION_MESSAGE, null, cuot.toArray(), cuot.get(0));
+            if (cu != null && !cu.isBlank() && !cu.isEmpty()) {
+                String des = JOptionPane.showInputDialog(null, "Digite la descripcion");
+                if (des != null && !des.isBlank() && !des.isEmpty()) {
+                    int mon = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite el monto de la cuota"));
 
-                try {
-                    int idCuota = obtenerIDCuota(cu);
-                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-                    String fecha = dtf.format(LocalDateTime.now());
-                    CallableStatement pst = gestor.getConexion().prepareCall("{CALL SP_INS_CUO(?, ?, ?, ?, ?)}");
-                    pst.setInt(1, idCuota);
-                    pst.setString(2, idCasa);//ARREGLAR
-                    pst.setString(3, des);
-                    pst.setString(4, fecha);
-                    pst.setInt(5, mon);
-                    pst.execute();
+                    try {
+                        int idCuota = obtenerIDCuota(cu);
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+                        String fecha = dtf.format(LocalDateTime.now());
+                        CallableStatement pst = gestor.getConexion().prepareCall("{CALL SP_INS_CUO(?, ?, ?, ?, ?)}");
+                        pst.setInt(1, idCuota);
+                        pst.setString(2, idCasa);//ARREGLAR
+                        pst.setString(3, des);
+                        pst.setString(4, fecha);
+                        pst.setInt(5, mon);
+                        pst.execute();
 
-                    DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                    modelo.addRow(new Object[]{0, idCuota, idCasa, des, fecha, mon});
-                    setChanged();
-                    notifyObservers("CARGANDO TABLA APARTAMENTOS");
-                } catch (SQLException e) {
-                    System.err.println("Error:" + e);
-                } finally {
-                    gestor.cerrar();
+                        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                        modelo.addRow(new Object[]{0, idCuota, idCasa, des, fecha, mon});
+                        setChanged();
+                        notifyObservers("CARGANDO TABLA APARTAMENTOS");
+                    } catch (SQLException e) {
+                        System.err.println("Error:" + e);
+                    } finally {
+                        gestor.cerrar();
+                    }
                 }
-
             }
         }
     }
+
     public void eliminarCuota(int cuot, int fila, JTable tabla) {
         String[] respuesta = {"Si", "No"};
         int res = JOptionPane.showOptionDialog(null, "¿Está seguro que desea eliminar la cuota?", "Eliminar", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, respuesta, respuesta[0]);
 
         if (res == 0) {
-           
+
             try {
                 CallableStatement cs = gestor.getConexion().prepareCall("{CALL SP_DEL_CUO(?)}");
-                cs.setInt(1,cuot );
+                cs.setInt(1, cuot);
                 cs.execute();
-              ((DefaultTableModel) tabla.getModel()).removeRow(fila);
+                ((DefaultTableModel) tabla.getModel()).removeRow(fila);
 
             } catch (Exception e) {
                 System.err.println("Error:" + e);

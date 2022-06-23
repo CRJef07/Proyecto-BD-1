@@ -1,4 +1,3 @@
-
 package Modelos;
 
 import Conexion.GestorBD;
@@ -84,37 +83,67 @@ public class Apartamentos extends Observable {
     }
 
     public void agregarAparta(JTable tabla, int idFilial) {
+        String dueno = "";
         String id = JOptionPane.showInputDialog(null, "Digite el id del apartamento");
         if (id != null && !id.isBlank() && !id.isEmpty()) {
             // ArrayList<String> cuot = obtenerDuenos();
-            String dueno = JOptionPane.showInputDialog(null, "Digite la cedula del dueño");
-            if (dueno != null && !dueno.isBlank() && !dueno.isEmpty()) {
-                // int idDue = obtenerIdDueno(dueno);
-                String nombre = JOptionPane.showInputDialog(null, "Digite su nombre");
+
+            ArrayList<String> dueños = obtenerDueños();
+
+            if (dueños != null && dueños.size() > 0) {
+                dueno = (String) JOptionPane.showInputDialog(null, "Seleccione un dueño", "Dueños", JOptionPane.QUESTION_MESSAGE, null, dueños.toArray(), dueños.get(0));
                 if (dueno != null && !dueno.isBlank() && !dueno.isEmpty()) {
-                    try {
-                        CallableStatement pst = gestor.getConexion().prepareCall("{CALL SP_INS_APAR(?, ?, ?, ?)}");
-                        pst.setString(1, id);
-                        pst.setInt(2, idFilial);
-                        pst.setString(3, dueno);
-                        pst.setString(4, "S");
-                        pst.execute();
-                     
-                        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                        modelo.addRow(new Object[]{id, dueno, nombre});
+                    // int idDue = obtenerIdDueno(dueno);
+                    String nombre = JOptionPane.showInputDialog(null, "Digite su nombre");
+                    if (dueno != null && !dueno.isBlank() && !dueno.isEmpty()) {
+                        try {
+                            CallableStatement pst = gestor.getConexion().prepareCall("{CALL SP_INS_APAR(?, ?, ?, ?)}");
+                            pst.setString(1, id);
+                            pst.setInt(2, idFilial);
+                            pst.setString(3, dueno);
+                            pst.setString(4, "S");
+                            pst.execute();
 
-                        setChanged();
-                        notifyObservers("CARGANDO TABLA APARTAMENTOS");
-                    } catch (SQLException e) {
-                        System.err.println("Error:" + e);
-                    } finally {
-                        gestor.cerrar();
+                            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                            modelo.addRow(new Object[]{id, dueno, nombre});
+
+                            setChanged();
+                            notifyObservers("CARGANDO TABLA APARTAMENTOS");
+                        } catch (SQLException e) {
+                            System.err.println("Error:" + e);
+                        } finally {
+                            gestor.cerrar();
+                        }
                     }
+
                 }
-
+            } else {
+                JOptionPane.showMessageDialog(null, "No existen dueños");
             }
-
+            //String dueno = JOptionPane.showInputDialog(null, "Digite la cedula del dueño");
         }
+    }
+
+    public ArrayList<String> obtenerDueños() {
+
+        ArrayList<String> dueños = new ArrayList();
+        String consulta = "SELECT * FROM DUEÑOS";
+        try {
+            Statement st = gestor.getConexion().createStatement();
+            ResultSet rs = st.executeQuery(consulta);
+            while (rs.next()) {
+                dueños.add(rs.getString(1));
+            }
+            setChanged();
+            notifyObservers("CARGANDO DUEÑOS");
+            return dueños;
+        } catch (SQLException e) {
+            System.err.println("Error:" + e);
+        } finally {
+            gestor.cerrar();
+        }
+
+        return null;
     }
 
     public int obtenerIdDueno(String due) {
