@@ -159,7 +159,7 @@ public class Filiales extends Observable {
         }
     }
 
-    public void eliminarFilial(int idFilial, JTable tbFiliales) {
+    public void eliminarFilial(int fila, int idFilial, JTable tbFiliales) {
         String[] respuesta = {"Si", "No"};
         int res = JOptionPane.showOptionDialog(null, "¿Está seguro que desea eliminar el filial?", "Eliminar", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, respuesta, respuesta[0]);
 
@@ -168,15 +168,12 @@ public class Filiales extends Observable {
                 CallableStatement cs = gestor.getConexion().prepareCall("{CALL SP_DEL_FIL(?)}");
                 cs.setInt(1, idFilial);
                 cs.execute();
-                DefaultTableModel modelo = (DefaultTableModel) tbFiliales.getModel();
-                for (int i = modelo.getRowCount() - 1; i >= 0; i--) {
-                    modelo.removeRow(i);
-                }
-                cargarFiliales(tbFiliales);
+
+                ((DefaultTableModel) tbFiliales.getModel()).removeRow(fila);
 
             } catch (Exception e) {
                 System.err.println("Error:" + e);
-            } 
+            }
         }
 
     }
