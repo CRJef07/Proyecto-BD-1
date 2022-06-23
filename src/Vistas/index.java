@@ -1,4 +1,5 @@
 package Vistas;
+
 import Controlador.Controlador;
 import java.util.Observable;
 import java.util.Observer;
@@ -7,27 +8,23 @@ import javax.swing.JOptionPane;
 public class index extends javax.swing.JFrame implements Observer {
 private String idCuotas ;
     private Controlador controlador;
-    
-    
+
     public index() {
         super("Lista Filiales");
         this.controlador = new Controlador();
         initComponents();
     }
 
-    public void iniciar(){
+    public void iniciar() {
         this.controlador.agregarObservador(this);
         this.controlador.cargarFiliales(tbFiliales);
-        
+
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    
-    
-   
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -39,6 +36,7 @@ private String idCuotas ;
         scroll = new javax.swing.JScrollPane();
         tbFiliales = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        btnDueños = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,7 +70,7 @@ private String idCuotas ;
                 EntrarFilialActionPerformed(evt);
             }
         });
-        jPanel1.add(EntrarFilial, new org.netbeans.lib.awtextra.AbsoluteConstraints(709, 475, 122, 43));
+        jPanel1.add(EntrarFilial, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 475, 122, 43));
 
         tbFiliales.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -108,6 +106,16 @@ private String idCuotas ;
         jLabel2.setText("Seleccione el filial");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, -1, -1));
 
+        btnDueños.setBackground(new java.awt.Color(102, 255, 204));
+        btnDueños.setForeground(new java.awt.Color(0, 0, 0));
+        btnDueños.setText("DUEÑOS");
+        btnDueños.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDueñosActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnDueños, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 475, 122, 43));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -124,39 +132,47 @@ private String idCuotas ;
 
     private void btnAgregarFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarFilialActionPerformed
         this.controlador.agregarFilial(tbFiliales);
-        
+
         //si no esta en blanco -si no está repetido -falta los datos nuevos de la tabla
-       
+
     }//GEN-LAST:event_btnAgregarFilialActionPerformed
 
     private void btnEliminarFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarFilialActionPerformed
 
         int fila = tbFiliales.getSelectedRow();
-        if(fila!= -1){
-           int idFilial= (int) tbFiliales.getValueAt(fila, 0);
-           try {
-            controlador.eliminarFilial(idFilial,tbFiliales); 
-            //*setVisible(false);
-        } catch (Exception e) {  
-            System.err.println("Error en ver Filiales: "+ e);
-        }         
+        if (fila != -1) {
+            int idFilial = (int) tbFiliales.getValueAt(fila, 0);
+            try {
+                controlador.eliminarFilial(idFilial, tbFiliales);
+                //*setVisible(false);
+            } catch (Exception e) {
+                System.err.println("Error en ver Filiales: " + e);
+            }
         }
     }//GEN-LAST:event_btnEliminarFilialActionPerformed
 
     private void EntrarFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EntrarFilialActionPerformed
         int fila = tbFiliales.getSelectedRow();
-        if(fila!= -1){
-           int idFilial= (int) tbFiliales.getValueAt(fila, 0);
-           try {
-            controlador.verFilial(idCuotas,idFilial); 
-            setVisible(false);
-            this.dispose();
-        } catch (Exception e) {  
-            System.err.println("Error en ver Filiales: "+ e);
-        }         
+
+        if (fila != -1) {
+            int idFilial = (int) tbFiliales.getValueAt(fila, 0);
+            try {
+                controlador.verFilial(idFilial);
+           //   controlador.verFilial(idCuotas,idFilial); 
+                setVisible(false);
+                this.dispose();
+            } catch (Exception e) {
+                System.err.println("Error en ver Filiales: " + e);
+            }
         }
-           
     }//GEN-LAST:event_EntrarFilialActionPerformed
+
+    private void btnDueñosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDueñosActionPerformed
+        Dueños vistaDueños = new Dueños();
+        vistaDueños.iniciar();
+        setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_btnDueñosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,6 +212,7 @@ private String idCuotas ;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton EntrarFilial;
     public javax.swing.JButton btnAgregarFilial;
+    private javax.swing.JButton btnDueños;
     public javax.swing.JButton btnEliminarFilial;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -205,6 +222,6 @@ private String idCuotas ;
 
     @Override
     public void update(Observable o, Object arg) {
-       // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

@@ -11,9 +11,12 @@ import java.util.Observer;
  */
 public class condominios extends javax.swing.JFrame implements Observer {
 
-    private Controlador controlador;
-    private int idFilial = 0;
+
     private String idCuotas;
+    private Controlador controlador=null;
+
+    private int idFilial = 0;
+
 
     public condominios() {
         super("Ver Filial");
@@ -22,7 +25,11 @@ public class condominios extends javax.swing.JFrame implements Observer {
 
     }
 
-    public void iniciar(String idAparta, int idFilial) {
+
+    //public void iniciar(String idAparta, int idFilial) {
+
+    public void iniciar(int idFilial) {
+
         this.idFilial = idFilial;
         this.idCuotas = idAparta;
         this.controlador.agregarObservador(this);
@@ -64,9 +71,9 @@ public class condominios extends javax.swing.JFrame implements Observer {
         tabla = new javax.swing.JTable();
         agregarApartamento = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        editarDueno = new javax.swing.JButton();
         verCuotas = new javax.swing.JButton();
         volver = new javax.swing.JButton();
+        btnAccesos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -149,16 +156,6 @@ public class condominios extends javax.swing.JFrame implements Observer {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel8.setText("Apartamentos");
 
-        editarDueno.setBackground(new java.awt.Color(255, 255, 204));
-        editarDueno.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        editarDueno.setForeground(new java.awt.Color(51, 51, 51));
-        editarDueno.setText("Editar Dueño");
-        editarDueno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editarDuenoActionPerformed(evt);
-            }
-        });
-
         verCuotas.setBackground(new java.awt.Color(204, 255, 204));
         verCuotas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         verCuotas.setForeground(new java.awt.Color(51, 51, 51));
@@ -172,10 +169,17 @@ public class condominios extends javax.swing.JFrame implements Observer {
         volver.setBackground(new java.awt.Color(255, 204, 204));
         volver.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         volver.setForeground(new java.awt.Color(51, 51, 51));
-        volver.setText("Volver");
+        volver.setText("VOLVER");
         volver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 volverActionPerformed(evt);
+            }
+        });
+
+        btnAccesos.setText("Accesos");
+        btnAccesos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccesosActionPerformed(evt);
             }
         });
 
@@ -184,42 +188,42 @@ public class condominios extends javax.swing.JFrame implements Observer {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 755, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(315, 315, 315)
-                        .addComponent(jLabel8)))
+
+                        .addComponent(btnAccesos)
+                        .addGap(221, 221, 221)
+                        .addComponent(jLabel8))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 755, javax.swing.GroupLayout.PREFERRED_SIZE))
+
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(volver)
-                .addGap(348, 348, 348))
+                .addGap(317, 317, 317))
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addComponent(editarDueno)
-                .addGap(86, 86, 86)
+                .addGap(115, 115, 115)
                 .addComponent(agregarApartamento)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(verCuotas)
-                .addGap(58, 58, 58))
+                .addGap(123, 123, 123))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jLabel8)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(btnAccesos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(editarDueno)
                     .addComponent(agregarApartamento)
                     .addComponent(verCuotas))
                 .addGap(18, 18, 18)
-                .addComponent(volver)
-                .addGap(0, 0, 0))
+                .addComponent(volver))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -333,6 +337,7 @@ public class condominios extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_volverActionPerformed
 
     private void verCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verCuotasActionPerformed
+
         int fila = tabla.getSelectedRow();
         if (fila != -1) {
             idCuotas = (String) tabla.getValueAt(fila, 0);
@@ -359,10 +364,25 @@ public class condominios extends javax.swing.JFrame implements Observer {
 //        }
     }//GEN-LAST:event_editarDuenoActionPerformed
 
+
     private void agregarApartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarApartamentoActionPerformed
 
         controlador.agregarAparta(tabla, idFilial);
     }//GEN-LAST:event_agregarApartamentoActionPerformed
+
+    private void btnAccesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccesosActionPerformed
+        int fila = tabla.getSelectedRow();
+        if(fila!= -1){
+            String idApartamento =(String) tabla.getValueAt(fila,0);
+           try {
+           controlador.verAccesos(idApartamento);
+            setVisible(false);
+            this.dispose();
+        } catch (Exception e) {  
+            System.err.println("Error en ver Accesos: "+ e);
+        }         
+        }
+    }//GEN-LAST:event_btnAccesosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -401,11 +421,11 @@ public class condominios extends javax.swing.JFrame implements Observer {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarApartamento;
+    private javax.swing.JButton btnAccesos;
     private javax.swing.JTextField cantApartamentos;
     private javax.swing.JTextField cantonFilial;
     private javax.swing.JTextField cedJuridica;
     private javax.swing.JTextField distritoFilial;
-    private javax.swing.JButton editarDueno;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

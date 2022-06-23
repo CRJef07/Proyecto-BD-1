@@ -4,7 +4,10 @@ import Conexion.GestorBD;
 import Modelos.Apartamentos;
 import Modelos.Cuotas;
 import Modelos.Dueno;
+import Modelos.Dueños;
 import Modelos.Filiales;
+import Modelos.M_Accesos;
+import Vistas.Accesos;
 import java.sql.SQLException;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -19,11 +22,17 @@ public class Controlador {
     private Dueno dueno;
     private Cuotas cuotas;
 
+    private M_Accesos accesos;
+    private Dueños dueños;
+
     public Controlador() {
         this.filiales = new Filiales();
         this.cuotas= new Cuotas();
         this.apartamentos = new Apartamentos();
         this.dueno = new Dueno();
+        this.dueños = new Dueños();
+        this.accesos = new M_Accesos();
+
     }
 
     public int getCantApartamentos() {
@@ -98,6 +107,14 @@ public class Controlador {
         this.filiales.agregarObservador(observador);
     }
 
+    public void agregarObservadorDueños(Observer observador) {
+        this.dueños.agregarObservadorDueños(observador);
+    }
+
+    public void agregarObservadorAccesos(Observer observador) {
+        this.accesos.agregarObservadorAccesos(observador);
+    }
+
     public void agregarFilial(JTable tbFiliales) {
         try {
             this.filiales.agregarFilial(tbFiliales);
@@ -108,9 +125,11 @@ public class Controlador {
 
     public void eliminarFilial(int idFilial, JTable tbFiliales) {
         this.filiales.eliminarFilial(idFilial, tbFiliales);
+
     }
     public void eliminarCuota(int idFilial,int fila, JTable tabla) {
         this.cuotas.eliminarCuota(idFilial, fila, tabla);
+
     }
 
     public void modificarFilial() {
@@ -137,9 +156,11 @@ public class Controlador {
         this.dueno.verDueno(idDueno);
     }
 
+
     public void verCuotas(String idCuotas, int idF) {
         this.cuotas.verCuotas(idCuotas, idF);
     }
+
 
     public void agregarAparta(JTable tabla, int idFilial) {
         this.apartamentos.agregarAparta(tabla, idFilial);
@@ -152,12 +173,57 @@ public class Controlador {
         this.apartamentos.cargarApartamentos(idFilial, tabla);
     }
 
+
     public void cargarCuotas(String idCuotas, JTable tabla) {
         this.cuotas.cargarCuotas(idCuotas, tabla);
     }
 
-    public void cargarFilial(int idFilial, JTextField cantApartamentos, JTextField cantonFilial, JTextField cedJuridica, JTextField distritoFilial, JTextField nombreFilial, JTextField provinciaFilial) {
+
+    public void cargarFilial(int idFilial, JTextField cantApartamentos, JTextField cantonFilial,
+            JTextField cedJuridica, JTextField distritoFilial, JTextField nombreFilial, JTextField provinciaFilial) {
         this.apartamentos.cargarFilial(idFilial, cantApartamentos, cantonFilial, cedJuridica, distritoFilial, nombreFilial, provinciaFilial);
+    }
+
+    public void verAccesos(String idApartamento) {
+        this.accesos.verAccesos(idApartamento);
+    }
+
+    public void cargarAccesos(String IdApartamento, JTable tbApartamentos) {
+        this.accesos.cargarAccesos(IdApartamento, tbApartamentos);
+    }
+
+    public void agregarAcceso(JTable tbAccesos, String idApartamento) {
+        try {
+            this.accesos.agregarAcceso(tbAccesos, idApartamento);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void cargarDueños(JTable tblDueños) {
+        this.dueños.cargarDueños(tblDueños);
+    }
+
+    public void eliminarDueño(String id, int fila, JTable table) {
+        this.dueños.eliminarDueño(id, fila, table);
+    }
+
+    public void editarDueño(String id, int fila, JTable table) {
+        try {
+            this.dueños.editarDueño(id, fila, table);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void agregarDueño(JTable table) {
+        try {
+            this.dueños.agregarDueño(table);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }
