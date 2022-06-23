@@ -115,6 +115,50 @@ public class M_Accesos extends Observable {
         access.iniciar(idApartamento);
     }
 
+    public void registrarSalida(int fila, JTable tbAccesos, String idApartamento, int id) throws SQLException {
+        String casa = "";
+        String entrada = "";
+        String visitante = "";
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+        String fecha = dtf.format(LocalDateTime.now());
+
+        try {
+            String cadena = "SELECT * FROM ACCESOS WHERE ID_ACCESO = " + id;
+            Statement st = gestor.getConexion().createStatement();
+            ResultSet rs = st.executeQuery(cadena);
+            while (rs.next()) {
+                casa = rs.getString(2);
+                entrada = rs.getString(3);
+                visitante = rs.getString(5);
+            }
+            setChanged();
+            notifyObservers("CARGANDO DUEÑOS");
+        } catch (SQLException e) {
+            System.err.println("Error al cargar para editar Dueños:" + e);
+        } finally {
+            gestor.cerrar();
+        }
+
+        try {
+            CallableStatement cs = gestor.getConexion().prepareCall("{CALL SP_UPD_ACC(?,?,?,?,?)}");
+            cs.setInt(1, id);
+            cs.setString(2, casa);
+            cs.setString(3, fecha);
+            cs.setString(4, fecha);
+            cs.setString(5, visitante);
+            cs.execute();
+
+            DefaultTableModel modelo = (DefaultTableModel) tbAccesos.getModel();
+            modelo.setValueAt(salida, fila, 3);
+
+        } catch (SQLException e) {
+            System.err.println("ERROR UPD ACCESOS: " + e);
+        } finally {
+            gestor.cerrar();
+        }
+    }
+
     public void agregarAcceso(JTable tbAccesos, String idApartamento) throws SQLException {
         String ced = JOptionPane.showInputDialog(null, "Ingrese la cedula del visitante \n DEBE SER MAYOR A 8 Y MENOR A 16 DÍGITOS");
 

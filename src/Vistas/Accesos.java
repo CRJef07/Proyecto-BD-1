@@ -139,7 +139,16 @@ public class Accesos extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_btnRegistAccesoActionPerformed
 
     private void btnSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalidaActionPerformed
-        // TODO add your handling code here:
+        int fila = tbAccesos.getSelectedRow();
+        if (fila != -1) {
+            int id = (int) tbAccesos.getValueAt(fila, 0);
+            try {
+                controlador.registrarSalida(fila, tbAccesos, idApartamento, id);
+                //*setVisible(false);
+            } catch (Exception e) {
+                System.err.println("Error en ver Filiales: " + e);
+            }
+        }
     }//GEN-LAST:event_btnSalidaActionPerformed
 
     public static void main(String args[]) {
