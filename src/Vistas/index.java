@@ -139,7 +139,6 @@ public class index extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_btnAgregarFilialActionPerformed
 
     private void btnEliminarFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarFilialActionPerformed
-
         int fila = tbFiliales.getSelectedRow();
         if (fila != -1) {
             int idFilial = (int) tbFiliales.getValueAt(fila, 0);

@@ -127,8 +127,9 @@ public class Controlador {
         this.filiales.eliminarFilial(fila, idFilial, tbFiliales);
 
     }
-    public void eliminarAparta(String idAparta,int fila, JTable tabla) {
-        this.apartamentos.eliminarAparta(idAparta,fila, tabla);
+
+    public void eliminarAparta(String idAparta, int fila, JTable tabla) {
+        this.apartamentos.eliminarAparta(idAparta, fila, tabla);
 
     }
 
@@ -197,6 +198,14 @@ public class Controlador {
     public void agregarAcceso(JTable tbAccesos, String idApartamento) {
         try {
             this.accesos.agregarAcceso(tbAccesos, idApartamento);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void registrarSalida(int fila, JTable tbAccesos, String idApartamento, int id) {
+        try {
+            this.accesos.registrarSalida(fila, tbAccesos, idApartamento, id);
         } catch (SQLException ex) {
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
