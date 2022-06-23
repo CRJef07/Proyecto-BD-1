@@ -123,8 +123,8 @@ public class Controlador {
         }
     }
 
-    public void eliminarFilial(int idFilial, JTable tbFiliales) {
-        this.filiales.eliminarFilial(idFilial, tbFiliales);
+    public void eliminarFilial(int fila, int idFilial, JTable tbFiliales) {
+        this.filiales.eliminarFilial(fila, idFilial, tbFiliales);
 
     }
     public void eliminarAparta(String idAparta,int fila, JTable tabla) {
