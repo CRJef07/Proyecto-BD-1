@@ -134,7 +134,7 @@ public class Filiales extends Observable {
 
                                     try {
                                         CallableStatement cs = gestor.getConexion().prepareCall("{CALL SP_INS_FIL(?,?,?,?,?,?)}");
-                                        cs.setString(1, nombre);
+                                        cs.setString(1, nombre.toUpperCase());
                                         cs.setInt(2, 0);
                                         cs.setInt(3, idProvincia);
                                         cs.setInt(4, idCanton);

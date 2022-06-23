@@ -6,7 +6,7 @@ import java.util.Observer;
 
 public class Accesos extends javax.swing.JFrame implements Observer {
 
-    private Controlador controlador=null;
+    private Controlador controlador = null;
     private String idApartamento = "";
 
     public Accesos() {
@@ -16,7 +16,6 @@ public class Accesos extends javax.swing.JFrame implements Observer {
     }
 
     public void iniciar(String idApartamento) {
-        
         this.controlador.agregarObservadorAccesos(this);
         this.idApartamento = idApartamento;
         this.controlador.cargarAccesos(this.idApartamento, tbAccesos);
@@ -74,6 +73,11 @@ public class Accesos extends javax.swing.JFrame implements Observer {
         });
 
         btnSalida.setText("Registrar Salida");
+        btnSalida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalidaActionPerformed(evt);
+            }
+        });
 
         btnVolver.setText("Volver");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
@@ -130,10 +134,14 @@ public class Accesos extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnRegistAccesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistAccesoActionPerformed
-      
+
         this.controlador.agregarAcceso(tbAccesos, idApartamento);
     }//GEN-LAST:event_btnRegistAccesoActionPerformed
-    
+
+    private void btnSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalidaActionPerformed
+
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -170,6 +178,6 @@ public class Accesos extends javax.swing.JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-     //   throw new UnsupportedOperationException("Not supported yet.");
+        //   throw new UnsupportedOperationException("Not supported yet.");
     }
 }

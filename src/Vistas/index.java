@@ -6,7 +6,8 @@ import java.util.Observer;
 import javax.swing.JOptionPane;
 
 public class index extends javax.swing.JFrame implements Observer {
-private String idCuotas ;
+
+    private String idCuotas;
     private Controlador controlador;
 
     public index() {
@@ -157,8 +158,8 @@ private String idCuotas ;
         if (fila != -1) {
             int idFilial = (int) tbFiliales.getValueAt(fila, 0);
             try {
-                controlador.verFilial(idFilial);
-           //   controlador.verFilial(idCuotas,idFilial); 
+                //controlador.verFilial(idFilial);
+                controlador.verFilial(idCuotas, idFilial);
                 setVisible(false);
                 this.dispose();
             } catch (Exception e) {

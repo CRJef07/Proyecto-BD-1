@@ -11,12 +11,10 @@ import java.util.Observer;
  */
 public class condominios extends javax.swing.JFrame implements Observer {
 
-
     private String idCuotas;
-    private Controlador controlador=null;
+    private Controlador controlador = null;
 
     private int idFilial = 0;
-
 
     public condominios() {
         super("Ver Filial");
@@ -25,11 +23,8 @@ public class condominios extends javax.swing.JFrame implements Observer {
 
     }
 
-
     //public void iniciar(String idAparta, int idFilial) {
-
-    public void iniciar(int idFilial) {
-
+    public void iniciar(String idAparta, int idFilial) {
         this.idFilial = idFilial;
         this.idCuotas = idAparta;
         this.controlador.agregarObservador(this);
@@ -372,15 +367,15 @@ public class condominios extends javax.swing.JFrame implements Observer {
 
     private void btnAccesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccesosActionPerformed
         int fila = tabla.getSelectedRow();
-        if(fila!= -1){
-            String idApartamento =(String) tabla.getValueAt(fila,0);
-           try {
-           controlador.verAccesos(idApartamento);
-            setVisible(false);
-            this.dispose();
-        } catch (Exception e) {  
-            System.err.println("Error en ver Accesos: "+ e);
-        }         
+        if (fila != -1) {
+            String idApartamento = (String) tabla.getValueAt(fila, 0);
+            try {
+                controlador.verAccesos(idApartamento);
+                setVisible(false);
+                this.dispose();
+            } catch (Exception e) {
+                System.err.println("Error en ver Accesos: " + e);
+            }
         }
     }//GEN-LAST:event_btnAccesosActionPerformed
 
