@@ -3,6 +3,7 @@ package Controlador;
 import Conexion.GestorBD;
 import Modelos.Apartamentos;
 import Modelos.Dueno;
+import Modelos.Dueños;
 import Modelos.Filiales;
 import java.sql.SQLException;
 import java.util.Observer;
@@ -16,11 +17,13 @@ public class Controlador {
     private Filiales filiales;
     private Apartamentos apartamentos;
     private Dueno dueno;
+    private Dueños dueños;
 
     public Controlador() {
         this.filiales = new Filiales();
-       this.apartamentos = new Apartamentos();
-       this.dueno = new Dueno();
+        this.apartamentos = new Apartamentos();
+        this.dueno = new Dueno();
+        this.dueños = new Dueños();
     }
 
     public int getCantApartamentos() {
@@ -94,6 +97,10 @@ public class Controlador {
     public void agregarObservador(Observer observador) {
         this.filiales.agregarObservador(observador);
     }
+    
+    public void agregarObservadorDueños(Observer observador) {
+        this.dueños.agregarObservadorDueños(observador);
+    }
 
     public void agregarFilial(JTable tbFiliales) {
         try {
@@ -103,18 +110,18 @@ public class Controlador {
         }
     }
 
-    public void eliminarFilial(int idFilial,JTable tbFiliales) {
-        this.filiales.eliminarFilial(idFilial,tbFiliales);
+    public void eliminarFilial(int idFilial, JTable tbFiliales) {
+        this.filiales.eliminarFilial(idFilial, tbFiliales);
     }
 
     public void modificarFilial() {
         this.filiales.modificarFilial();
     }
 
-
     public void cargarFiliales(JTable tabla) {
         this.filiales.cargarFiliales(tabla);
     }
+
     public void cargarDueno(JTable tabla) {
         this.dueno.cargarDueno(tabla);
     }
@@ -122,21 +129,49 @@ public class Controlador {
     public void verFilial(int idFilial) {
         this.apartamentos.verFilial(idFilial);
     }
-     public void verAgregarAparta() {
+
+    public void verAgregarAparta() {
         this.apartamentos.verAgregarAparta();
     }
-      public void verDueno(int idDueno) {
+
+    public void verDueno(int idDueno) {
         this.dueno.verDueno(idDueno);
     }
-     public void agregarAparta(JTable tabla, int idFilial) {
+
+    public void agregarAparta(JTable tabla, int idFilial) {
         this.apartamentos.agregarAparta(tabla, idFilial);
     }
 
     public void cargarApartamentos(int idFilial, JTable tabla) {
         this.apartamentos.cargarApartamentos(idFilial, tabla);
     }
-    public void cargarFilial( int idFilial, JTextField cantApartamentos, JTextField cantonFilial, JTextField cedJuridica, JTextField distritoFilial, JTextField nombreFilial, JTextField provinciaFilial) {
-        this.apartamentos.cargarFilial(idFilial,cantApartamentos, cantonFilial, cedJuridica, distritoFilial, nombreFilial, provinciaFilial);
-    }   
+
+    public void cargarFilial(int idFilial, JTextField cantApartamentos, JTextField cantonFilial, JTextField cedJuridica, JTextField distritoFilial, JTextField nombreFilial, JTextField provinciaFilial) {
+        this.apartamentos.cargarFilial(idFilial, cantApartamentos, cantonFilial, cedJuridica, distritoFilial, nombreFilial, provinciaFilial);
+    }
+
+    public void cargarDueños(JTable tblDueños) {
+        this.dueños.cargarDueños(tblDueños);
+    }
+
+    public void eliminarDueño(String id, int fila, JTable table) {
+        this.dueños.eliminarDueño(id, fila, table);
+    }
+
+    public void editarDueño(int id, int fila, JTable table) {
+        try {
+            this.dueños.editarDueño(id, fila, table);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void agregarDueño(JTable table) {
+        try {
+            this.dueños.agregarDueño(table);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
 }
