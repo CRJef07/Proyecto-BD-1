@@ -8,6 +8,7 @@ import java.sql.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Observable;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -26,9 +27,9 @@ public class Apartamentos extends Observable {
         this.gestor = new GestorBD();
     }
 
-    public void verFilial(int idFilial) {
+    public void verFilial(String idAparta, int idFilial) {
         condominios VistaCondominio = new condominios();
-        VistaCondominio.iniciar(idFilial);
+        VistaCondominio.iniciar(idAparta, idFilial);
     }
 
     public void verAgregarAparta() {
@@ -67,12 +68,11 @@ public class Apartamentos extends Observable {
             String cadena = "SELECT APAR.ID_CASA, APAR.ID_DUEÑO, DUE.NOMBRE, DUE.APE1, DUE.APE2 FROM APARTAMENTOS APAR JOIN DUEÑOS DUE ON (APAR.ID_DUEÑO = DUE.ID_DUEÑO) WHERE ID_FILIAL= " + idFilial;
             Statement st = gestor.getConexion().createStatement();
             ResultSet rs = st.executeQuery(cadena);
-            String nombreCompleto= "";
+            String nombreCompleto = "";
             while (rs.next()) {
-                nombreCompleto= rs.getString(3)+" "+ rs.getString(4)+" "+ rs.getString(5);
+                nombreCompleto = rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5);
                 DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
                 modelo.addRow(new Object[]{rs.getString(1), rs.getString(2), nombreCompleto});
-
             }
             setChanged();
             notifyObservers("CARGANDO APARTAMENTOS");
@@ -86,7 +86,11 @@ public class Apartamentos extends Observable {
     public void agregarAparta(JTable tabla, int idFilial) {
         String id = JOptionPane.showInputDialog(null, "Digite el id del apartamento");
         if (id != null && !id.isBlank() && !id.isEmpty()) {
-                String dueno = JOptionPane.showInputDialog(null, "Digite la cedula del apartamento");
+            // ArrayList<String> cuot = obtenerDuenos();
+            String dueno = JOptionPane.showInputDialog(null, "Digite la cedula del dueño");
+            if (dueno != null && !dueno.isBlank() && !dueno.isEmpty()) {
+                // int idDue = obtenerIdDueno(dueno);
+                String nombre = JOptionPane.showInputDialog(null, "Digite su nombre");
                 if (dueno != null && !dueno.isBlank() && !dueno.isEmpty()) {
                     try {
                         CallableStatement pst = gestor.getConexion().prepareCall("{CALL SP_INS_APAR(?, ?, ?, ?)}");
@@ -95,9 +99,9 @@ public class Apartamentos extends Observable {
                         pst.setString(3, dueno);
                         pst.setString(4, "S");
                         pst.execute();
-                        
-                        //DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-                       // modelo.addRow(new Object[]{id, dueno, idFilial});
+                     
+                        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                        modelo.addRow(new Object[]{id, dueno, nombre});
 
                         setChanged();
                         notifyObservers("CARGANDO TABLA APARTAMENTOS");
@@ -106,11 +110,53 @@ public class Apartamentos extends Observable {
                     } finally {
                         gestor.cerrar();
                     }
-
                 }
-            
+
+            }
 
         }
+    }
+
+    public int obtenerIdDueno(String due) {
+        int id = 0;
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = gestor.getConexion().createStatement();
+            rs = st.executeQuery("SELECT ID_DUEÑO FROM DUEÑOS WHERE NOMBRE,APE1,APE2 = '" + due + "'");
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("ERROR AL OBTENER EL ID DE DUEÑO  " + e);
+        } finally {
+            gestor.cerrar();
+        }
+
+        return id;
+    }
+
+    public ArrayList<String> obtenerDuenos() {
+
+        ArrayList<String> provincias = new ArrayList();
+        String consulta = "SELECT NOMBRE,APE1,APE2 FROM DUEÑOS";
+        try {
+            Statement st = gestor.getConexion().createStatement();
+            ResultSet rs = st.executeQuery(consulta);
+            while (rs.next()) {
+                provincias.add(rs.getString(2));
+            }
+            setChanged();
+            notifyObservers("CARGANDO DUEÑOS");
+            return provincias;
+        } catch (SQLException e) {
+            System.err.println("Error:" + e);
+        } finally {
+            gestor.cerrar();
+        }
+
+        return null;
     }
 
 }
