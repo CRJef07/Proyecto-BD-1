@@ -11,7 +11,7 @@ import java.util.Observer;
  */
 public class condominios extends javax.swing.JFrame implements Observer {
     
-    private Controlador controlador;
+    private Controlador controlador=null;
     private int idFilial = 0;
     
     public condominios() {
@@ -65,6 +65,7 @@ public class condominios extends javax.swing.JFrame implements Observer {
         editarDueno = new javax.swing.JButton();
         verCuotas = new javax.swing.JButton();
         volver = new javax.swing.JButton();
+        btnAccesos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -177,18 +178,25 @@ public class condominios extends javax.swing.JFrame implements Observer {
             }
         });
 
+        btnAccesos.setText("Accesos");
+        btnAccesos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccesosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 755, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(315, 315, 315)
-                        .addComponent(jLabel8)))
+                        .addComponent(btnAccesos)
+                        .addGap(221, 221, 221)
+                        .addComponent(jLabel8))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 755, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -207,7 +215,9 @@ public class condominios extends javax.swing.JFrame implements Observer {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jLabel8)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(btnAccesos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
@@ -352,6 +362,20 @@ public class condominios extends javax.swing.JFrame implements Observer {
         controlador.agregarAparta(tabla, idFilial);
     }//GEN-LAST:event_agregarApartamentoActionPerformed
 
+    private void btnAccesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccesosActionPerformed
+        int fila = tabla.getSelectedRow();
+        if(fila!= -1){
+            String idApartamento =(String) tabla.getValueAt(fila,0);
+           try {
+           controlador.verAccesos(idApartamento);
+            setVisible(false);
+            this.dispose();
+        } catch (Exception e) {  
+            System.err.println("Error en ver Accesos: "+ e);
+        }         
+        }
+    }//GEN-LAST:event_btnAccesosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -389,6 +413,7 @@ public class condominios extends javax.swing.JFrame implements Observer {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarApartamento;
+    private javax.swing.JButton btnAccesos;
     private javax.swing.JTextField cantApartamentos;
     private javax.swing.JTextField cantonFilial;
     private javax.swing.JTextField cedJuridica;

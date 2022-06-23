@@ -176,9 +176,7 @@ public class Filiales extends Observable {
 
             } catch (Exception e) {
                 System.err.println("Error:" + e);
-            } finally {
-                gestor = null;
-            }
+            } 
         }
 
     }

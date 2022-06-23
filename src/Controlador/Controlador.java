@@ -4,6 +4,8 @@ import Conexion.GestorBD;
 import Modelos.Apartamentos;
 import Modelos.Dueno;
 import Modelos.Filiales;
+import Modelos.M_Accesos;
+import Vistas.Accesos;
 import java.sql.SQLException;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -16,11 +18,13 @@ public class Controlador {
     private Filiales filiales;
     private Apartamentos apartamentos;
     private Dueno dueno;
+    private M_Accesos accesos;
 
     public Controlador() {
         this.filiales = new Filiales();
        this.apartamentos = new Apartamentos();
        this.dueno = new Dueno();
+       this.accesos = new M_Accesos();
     }
 
     public int getCantApartamentos() {
@@ -95,6 +99,9 @@ public class Controlador {
         this.filiales.agregarObservador(observador);
     }
 
+    public void agregarObservadorAccesos(Observer observador) {
+        this.accesos.agregarObservadorAccesos(observador);
+    }
     public void agregarFilial(JTable tbFiliales) {
         try {
             this.filiales.agregarFilial(tbFiliales);
@@ -135,8 +142,26 @@ public class Controlador {
     public void cargarApartamentos(int idFilial, JTable tabla) {
         this.apartamentos.cargarApartamentos(idFilial, tabla);
     }
-    public void cargarFilial( int idFilial, JTextField cantApartamentos, JTextField cantonFilial, JTextField cedJuridica, JTextField distritoFilial, JTextField nombreFilial, JTextField provinciaFilial) {
+    
+    public void cargarFilial( int idFilial, JTextField cantApartamentos, JTextField cantonFilial, 
+        JTextField cedJuridica, JTextField distritoFilial, JTextField nombreFilial, JTextField provinciaFilial) {
         this.apartamentos.cargarFilial(idFilial,cantApartamentos, cantonFilial, cedJuridica, distritoFilial, nombreFilial, provinciaFilial);
     }   
+    
+    public void verAccesos(String idApartamento){
+      this.accesos.verAccesos(idApartamento);
+    }
+    
+    public void cargarAccesos(String IdApartamento,JTable tbApartamentos){
+    this.accesos.cargarAccesos(IdApartamento,tbApartamentos);
+}
+
+    public void agregarAcceso(JTable tbAccesos,String idApartamento) {
+        try {
+            this.accesos.agregarAcceso(tbAccesos,idApartamento);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
 }
