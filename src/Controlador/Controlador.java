@@ -158,7 +158,7 @@ public class Controlador {
         this.dueños.eliminarDueño(id, fila, table);
     }
 
-    public void editarDueño(int id, int fila, JTable table) {
+    public void editarDueño(String id, int fila, JTable table) {
         try {
             this.dueños.editarDueño(id, fila, table);
         } catch (SQLException ex) {

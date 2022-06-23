@@ -24,7 +24,7 @@ public class Dueños extends Observable {
     public Dueños() {
         this.gestor = new GestorBD();
     }
-    
+
     public void agregarObservadorDueños(Observer observador) {
         addObserver(observador);
         setChanged();
@@ -119,60 +119,71 @@ public class Dueños extends Observable {
         }
     }
 
-    public void editarDueño(int idDueño, int fila, JTable table) throws SQLException {
-        int opcRespuesta = JOptionPane.showConfirmDialog(null, "Se le volveran a pedir todos los datos del dueño \n ¿Desea editar al dueño seleccionado?");
+    public void editarDueño(String idDueño, int fila, JTable table) throws SQLException {
+        int opcRespuesta = JOptionPane.showConfirmDialog(null, "¿Desea cambiar el estado del dueño seleccionado?");
 
         if (opcRespuesta == JOptionPane.YES_NO_OPTION) {
-            String var_nombre = (String) JOptionPane.showInputDialog(null, "Digite el nombre del nuevo dueño");
+            String nombre = "";
+            String ape1 = "";
+            String ape2 = "";
+            String opcHabilitado = "";
 
-            if (var_nombre != null && !var_nombre.isBlank() && !var_nombre.isEmpty() && !var_nombre.equals("")) {
-                if (var_nombre.length() <= 15) {
-                    System.out.println(var_nombre);
-
-                    String var_ape1 = (String) JOptionPane.showInputDialog(null, "Digite el primer apellido del nuevo dueño");
-
-                    if (var_ape1 != null && !var_ape1.isBlank() && !var_ape1.isEmpty() && !var_ape1.equals("")) {
-                        if (var_nombre.length() <= 15) {
-                            System.out.println(var_ape1);
-                            String var_ape2 = (String) JOptionPane.showInputDialog(null, "Digite el segundo apellido del nuevo dueño");
-                            if (var_ape2 != null && !var_ape2.isBlank() && !var_ape2.isEmpty() && !var_ape2.equals("")) {
-                                if (var_ape2.length() <= 15) {
-
-                                    try {
-                                        //EXECUTE SP_INS_DUE ('117180305', 'JEFTE', 'VEGA', 'HIDALGO', 'S');
-                                        CallableStatement cs = gestor.getConexion().prepareCall("{CALL SP_INS_DUE(?, ?, ?, ?, ?)}");
-                                        cs.setString(1, "");
-                                        cs.setString(2, var_nombre.toUpperCase());
-                                        cs.setString(3, var_ape1.toUpperCase());
-                                        cs.setString(4, var_ape2.toUpperCase());
-                                        cs.setString(5, "S");
-                                        cs.execute();
-
-                                        DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-                                        modelo.addRow(new Object[]{"", var_nombre.toUpperCase() + " " + var_ape1.toUpperCase() + " " + var_ape2.toUpperCase(), "HABILITADO"});
-
-                                    } catch (SQLException e) {
-                                        System.err.println("Error:" + e);
-
-                                    } finally {
-                                        gestor.cerrar();
-                                    }
-
-                                } else {
-                                    JOptionPane.showMessageDialog(null, "El SEGUNDO APELLIDO debe contener maximo 15 digitos", "Dialog", JOptionPane.ERROR_MESSAGE);
-                                    System.err.println("El SEGUNDO APELLIDO debe contener maximo 15 digitos");
-                                }
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(null, "El PRIMER APELLIDO debe contener maximo 15 digitos", "Dialog", JOptionPane.ERROR_MESSAGE);
-                            System.err.println("El PRIMER APELLIDO debe contener maximo 15 digitos");
-                        }
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "El NOMBRE debe contener maximo 15 digitos", "Dialog", JOptionPane.ERROR_MESSAGE);
-                    System.err.println("El NOMBRE debe contener maximo 15 digitos");
+            try {
+                String cadena = "SELECT * FROM DUEÑOS WHERE ID_DUEÑO = '" + idDueño + "'";
+                Statement st = gestor.getConexion().createStatement();
+                ResultSet rs = st.executeQuery(cadena);
+                while (rs.next()) {
+                    nombre = rs.getString(2);
+                    ape1 = rs.getString(3);
+                    ape2 = rs.getString(4);
+                    opcHabilitado = rs.getString(5);
                 }
-            }//SE QUEDA
+                setChanged();
+                notifyObservers("CARGANDO DUEÑOS");
+            } catch (SQLException e) {
+                System.err.println("Error al cargar para editar Dueños:" + e);
+            } finally {
+                gestor.cerrar();
+            }
+
+            if (opcHabilitado.equals("S")) {
+                try {
+                    CallableStatement cs = gestor.getConexion().prepareCall("{CALL SP_UPD_DUE(?, ?, ?, ?, ?)}");
+                    cs.setString(1, idDueño);
+                    cs.setString(2, nombre);
+                    cs.setString(3, ape1);
+                    cs.setString(4, ape2);
+                    cs.setString(5, "N");
+                    cs.execute();
+
+                    DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+                    modelo.setValueAt("NO HABILITADO", fila, 2);
+
+                } catch (SQLException e) {
+                    System.err.println("ERROR opc SI al editar dueño:" + e);
+                } finally {
+                    gestor.cerrar();
+                }
+            } else {
+                try {
+                    CallableStatement cs = gestor.getConexion().prepareCall("{CALL SP_UPD_DUE(?, ?, ?, ?, ?)}");
+                    cs.setString(1, idDueño);
+                    cs.setString(2, nombre);
+                    cs.setString(3, ape1);
+                    cs.setString(4, ape2);
+                    cs.setString(5, "S");
+                    cs.execute();
+
+                    DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+                    modelo.setValueAt("HABILITADO", fila, 2);
+
+                } catch (SQLException e) {
+                    System.err.println("ERROR opc NO al editar dueño:" + e);
+                } finally {
+                    gestor.cerrar();
+                }
+            }
+
         }
     }
 

@@ -143,13 +143,13 @@ public class Dueños extends javax.swing.JFrame implements Observer {
         System.out.println("EDITAR DUEÑO");
         int fila = tblDueños.getSelectedRow();
         if (fila != -1) {
-            int idDueño = (int) tblDueños.getValueAt(fila, 0);
+            String idDueño = (String) tblDueños.getModel().getValueAt(fila, 0);
             try {
-                controlador.editarDueño(idDueño,fila, tblDueños);
+                controlador.editarDueño(idDueño, fila, tblDueños);
             } catch (Exception e) {
-                System.err.println("Error en ver Filiales: " + e);
+                System.err.println("Error en btn editar dueño: " + e);
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Para editar un dueño debe seleccionar una fila con el mouse");
         }
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -160,11 +160,11 @@ public class Dueños extends javax.swing.JFrame implements Observer {
         if (fila != -1) {
             String idDueño = (String) tblDueños.getModel().getValueAt(fila, 0);
             try {
-                controlador.eliminarDueño(idDueño,fila, tblDueños);
+                controlador.eliminarDueño(idDueño, fila, tblDueños);
             } catch (Exception e) {
                 System.err.println("Error en btn eliminar dueño: " + e);
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Para eliminar un dueño debe seleccionar una fila con el mouse");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
