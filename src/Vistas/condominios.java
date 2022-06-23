@@ -10,19 +10,21 @@ import java.util.Observer;
  * @author hilla
  */
 public class condominios extends javax.swing.JFrame implements Observer {
-    
+
     private Controlador controlador;
     private int idFilial = 0;
-    
+    private String idCuotas;
+
     public condominios() {
         super("Ver Filial");
         this.controlador = new Controlador();
         initComponents();
-        
+
     }
-    
-    public void iniciar(int idFilial) {
+
+    public void iniciar(String idAparta, int idFilial) {
         this.idFilial = idFilial;
+        this.idCuotas = idAparta;
         this.controlador.agregarObservador(this);
         this.controlador.cargarFilial(this.idFilial, cantApartamentos, cantonFilial, cedJuridica, distritoFilial, nombreFilial, provinciaFilial);
         this.controlador.cargarApartamentos(this.idFilial, tabla);
@@ -30,7 +32,7 @@ public class condominios extends javax.swing.JFrame implements Observer {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
-        
+
     }
 
     /**
@@ -331,20 +333,30 @@ public class condominios extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_volverActionPerformed
 
     private void verCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verCuotasActionPerformed
-        // TODO add your handling code here:
+        int fila = tabla.getSelectedRow();
+        if (fila != -1) {
+            idCuotas = (String) tabla.getValueAt(fila, 0);
+            try {
+                controlador.verCuotas(idCuotas, idFilial);
+                setVisible(false);
+                this.dispose();
+            } catch (Exception e) {
+                System.err.println("Error en ver Cuotas: " + e);
+            }
+        }
     }//GEN-LAST:event_verCuotasActionPerformed
 
     private void editarDuenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarDuenoActionPerformed
-        int fila = tabla.getSelectedRow();
-        if (fila != -1) {
-            int idDueno = (int) tabla.getValueAt(fila, 0);
-            try {
-                controlador.verDueno(idDueno);
-                //*setVisible(false);
-            } catch (Exception e) {
-                System.err.println("Error en ver Duenos: " + e);
-            }
-        }
+//        int fila = tabla.getSelectedRow();
+//        if (fila != -1) {
+//            int idDueno = (int) tabla.getValueAt(fila, 0);
+//            try {
+//                controlador.verDueno(idDueno);
+//                //*setVisible(false);
+//            } catch (Exception e) {
+//                System.err.println("Error en ver Duenos: " + e);
+//            }
+//        }
     }//GEN-LAST:event_editarDuenoActionPerformed
 
     private void agregarApartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarApartamentoActionPerformed
@@ -415,6 +427,6 @@ public class condominios extends javax.swing.JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        
+
     }
 }
